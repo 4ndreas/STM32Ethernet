@@ -1,3 +1,17 @@
+Modified library to run on the NUCLEO-H743ZI2 (STM32H743ZIT6U). However, there are some caveats that come with it:
+
+* code is take form the STM32CubeMX generated code version 1.11
+* needs modified linker-script found in the ld/ folder
+* also the memory has to be initialised via the ```MPU_Config();```
+see the ```NUCLEO-H743ZI2``` example for details.
+
+  a detailed description can be found at 
+  https://community.st.com/s/article/How-to-create-project-for-STM32H7-with-Ethernet-and-LwIP-stack-working
+
+  section 10 is mostly relevant for this.
+
+
+
 # STM32 Ethernet Library for Arduino
 
 With an STM32 board with Ethernet compatibility, this library allows a STM32

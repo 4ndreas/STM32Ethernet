@@ -25,6 +25,21 @@
  */
 #define NO_SYS                  1
 
+/*----- WITH_RTOS disabled (Since FREERTOS is not set) -----*/
+#define WITH_RTOS 0
+#define ETH_RX_BUFFER_SIZE 1536
+// #define LWIP_RAM_HEAP_POINTER 0x30044000
+#define LWIP_RAM_HEAP_POINTER 0x30044B00
+
+#define LWIP_SUPPORT_CUSTOM_PBUF 1
+#define LWIP_ETHERNET 1
+#define LWIP_DNS_SECURE 7
+#define TCP_SNDLOWAT 1071
+#define TCP_SNDQUEUELOWAT 5
+#define TCP_WND_UPDATE_THRESHOLD 536
+#define RECV_BUFSIZE_DEFAULT 2000000000
+
+
 /**
  * SYS_LIGHTWEIGHT_PROT==1: if you want inter-task protection for certain
  * critical regions during buffer allocation, deallocation and memory
@@ -42,16 +57,17 @@
 
 /* MEM_SIZE: the size of the heap memory. If the application will send
 a lot of data that needs to be copied, this should be set high. */
-#define MEM_SIZE                (10*1024)
+// #define MEM_SIZE                (16*1024)
+ #define MEM_SIZE                (12000)
 
 /* MEMP_NUM_PBUF: the number of memp struct pbufs. If the application
    sends a lot of data out of ROM (or other static memory), this
    should be set high. */
-#define MEMP_NUM_PBUF           10
+#define MEMP_NUM_PBUF           16
 /* MEMP_NUM_UDP_PCB: the number of UDP protocol control blocks. One
    per active UDP "connection". */
 #define MEMP_NUM_UDP_PCB        6
-/* MEMP_NUM_TCP_PCB: the number of simultaneously active TCP
+/* MEMP_NUM_TCP_PCB: the number of simulatenously active TCP
    connections. */
 #define MEMP_NUM_TCP_PCB        10
 /* MEMP_NUM_TCP_PCB_LISTEN: the number of listening TCP
@@ -60,7 +76,7 @@ a lot of data that needs to be copied, this should be set high. */
 /* MEMP_NUM_TCP_SEG: the number of simultaneously queued TCP
    segments. */
 #define MEMP_NUM_TCP_SEG        8
-/* MEMP_NUM_SYS_TIMEOUT: the number of simultaneously active
+/* MEMP_NUM_SYS_TIMEOUT: the number of simulateously active
    timeouts. */
 #define MEMP_NUM_SYS_TIMEOUT    10
 
@@ -165,6 +181,8 @@ The STM32F4x7 allows computing and verifying the IP, UDP, TCP and ICMP checksums
   #define CHECKSUM_CHECK_TCP              0
   /* CHECKSUM_CHECK_ICMP==0: Check checksums by hardware for incoming ICMP packets.*/
   #define CHECKSUM_GEN_ICMP               0
+  /*----- Value in opt.h for CHECKSUM_CHECK_ICMP6: 1 -----*/
+#define CHECKSUM_CHECK_ICMP6 0
 #else
   /* CHECKSUM_GEN_IP==1: Generate checksums in software for outgoing IP packets.*/
   #define CHECKSUM_GEN_IP                 1

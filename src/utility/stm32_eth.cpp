@@ -48,6 +48,7 @@
 #include "lwip/dns.h"
 
 /* Check ethernet link status every seconds */
+#define TIMER_LOOP_US 1000U
 #define TIME_CHECK_ETH_LINK_STATE 500U
 
 /* Timeout for DNS request */
@@ -67,13 +68,6 @@
   #warning "Default timer used to call ethernet scheduler at regular interval: TIM14"
 #endif
 
-/* Interrupt priority */
-#ifndef ETH_TIM_IRQ_PRIO
-  #define ETH_TIM_IRQ_PRIO       15 // Warning: it should be lower prio (higher value) than Systick
-#endif
-#ifndef ETH_TIM_IRQ_SUBPRIO
-  #define ETH_TIM_IRQ_SUBPRIO    0
-#endif
 /* Ethernet configuration: user parameters */
 struct stm32_eth_config {
   ip_addr_t ipaddr;
@@ -175,7 +169,8 @@ static void TIM_scheduler_Config(void)
   /* Set TIMx instance. */
   TimHandle.timer = DEFAULT_ETHERNET_TIMER;
   /* Timer set to 1ms */
-  TimerHandleInit(&TimHandle, (uint16_t)(1000 - 1), ((uint32_t)(getTimerClkFreq(DEFAULT_ETHERNET_TIMER) / (1000000)) - 1));
+
+  TimerHandleInit(&TimHandle, (uint16_t)(TIMER_LOOP_US - 1), ((uint32_t)(getTimerClkFreq(DEFAULT_ETHERNET_TIMER) / (1000000)) - 1));
   attachIntHandle(&TimHandle, scheduler_callback);
 }
 #else
@@ -189,7 +184,6 @@ static void TIM_scheduler_Config(void)
 {
   /* Configure HardwareTimer */
   EthTim = new HardwareTimer(DEFAULT_ETHERNET_TIMER);
-  EthTim->setInterruptPriority(ETH_TIM_IRQ_PRIO, ETH_TIM_IRQ_SUBPRIO);
   EthTim->setMode(1, TIMER_OUTPUT_COMPARE);
 
   /* Timer set to 1ms */
