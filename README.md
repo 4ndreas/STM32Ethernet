@@ -1,7 +1,9 @@
-Modified library to run on the NUCLEO-H743ZI2 (STM32H743ZIT6U). However, there are some caveats that come with it:
+Modified library to run on the NUCLEO-H743ZI2 (STM32H743ZIT6U). Code base is form the STM32CubeMX generated code version 1.11. However, there are some caveats that come with it:
 
-* code is take form the STM32CubeMX generated code version 1.11
 * needs modified linker-script found in the ld/ folder
+	* The linker scrips are located at ```C:\Users\<username>\AppData\Local\Arduino15\packages\STMicroelectronics\hardware\stm32\<version>\variants\STM32H7xx\```
+ 	For the Nucleo-H743Zi2 board use this:
+ 	```H742Z(G-I)T_H743Z(G-I)T_H747A(G-I)I_H747I(G-I)T_H750ZBT_H753ZIT_H757AII_H757IIT\ldscript.ld```
 * also the memory has to be initialised via the ```MPU_Config();```
 see the ```NUCLEO-H743ZI2``` example for details.
 
