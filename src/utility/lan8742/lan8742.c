@@ -20,6 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "lan8742.h"
+#include "Arduino.h"
 
 /** @addtogroup BSP
   * @{
@@ -168,13 +169,15 @@ int32_t  LAN8742_RegisterBusIO(lan8742_Object_t *pObj, lan8742_IOCtx_t *ioctx)
       
    if(status == LAN8742_STATUS_OK)
    {
-     tickstart =  pObj->IO.GetTick();
+    //  tickstart =  pObj->IO.GetTick();
      
      /* Wait for 2s to perform initialization */
-     while((pObj->IO.GetTick() - tickstart) <= LAN8742_INIT_TO)
-     {
+    //  while((pObj->IO.GetTick() - tickstart) <= LAN8742_INIT_TO)
+    //  {
+    //  }
 
-     }
+    // GetTick returns here allways 0 ????
+    delay(2000);
      pObj->Is_Initialized = 1;
    }
    

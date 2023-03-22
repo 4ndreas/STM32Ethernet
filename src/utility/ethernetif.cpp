@@ -124,39 +124,23 @@ LWIP_MEMPOOL_DECLARE(RX_POOL, ETH_RX_BUFFER_CNT, sizeof(RxBuff_t), "Zero-copy RX
 /* Variable Definitions */
 static uint8_t RxAllocStatus;
 
-#if defined ( __ICCARM__ ) /*!< IAR Compiler */
-
-#pragma location=0x30040000
-ETH_DMADescTypeDef  DMARxDscrTab[ETH_RX_DESC_CNT]; /* Ethernet Rx DMA Descriptors */
-#pragma location=0x30040060
-ETH_DMADescTypeDef  DMATxDscrTab[ETH_TX_DESC_CNT]; /* Ethernet Tx DMA Descriptors */
-
-#elif defined ( __CC_ARM )  /* MDK ARM Compiler */
-
-__attribute__((at(0x30040000))) ETH_DMADescTypeDef  DMARxDscrTab[ETH_RX_DESC_CNT]; /* Ethernet Rx DMA Descriptors */
-__attribute__((at(0x30040060))) ETH_DMADescTypeDef  DMATxDscrTab[ETH_TX_DESC_CNT]; /* Ethernet Tx DMA Descriptors */
-
-#elif defined ( __GNUC__ ) /* GNU Compiler */
-
 ETH_DMADescTypeDef DMARxDscrTab[ETH_RX_DESC_CNT] __attribute__((section(".RxDecripSection"))); /* Ethernet Rx DMA Descriptors */
 ETH_DMADescTypeDef DMATxDscrTab[ETH_TX_DESC_CNT] __attribute__((section(".TxDecripSection")));   /* Ethernet Tx DMA Descriptors */
 
-#endif
-
-/**
-*
-* remember to change the linker script as described in section 10. of this articel:
-* https://community.st.com/s/article/How-to-create-project-for-STM32H7-with-Ethernet-and-LwIP-stack-working
-*
-* The linker scrips are located at 
-* C:\Users\<username>\AppData\Local\Arduino15\packages\STMicroelectronics\hardware\stm32\<version>\variants\STM32H7xx\
-*
-* For the Nucleo-H743Zi2 board use this:
-* H742Z(G-I)T_H743Z(G-I)T_H747A(G-I)I_H747I(G-I)T_H750ZBT_H753ZIT_H757AII_H757IIT\ldscript.ld
-* 
-**/
-
 __attribute__((section(".Rx_PoolSection"))) extern u8_t memp_memory_RX_POOL_base[];
+
+/*
+
+remember to change the linker script as described in section 10. of this articel:
+https://community.st.com/s/article/How-to-create-project-for-STM32H7-with-Ethernet-and-LwIP-stack-working
+
+The linker scrips are located at 
+C:\Users\<username>\AppData\Local\Arduino15\packages\STMicroelectronics\hardware\stm32\<version>\variants\STM32H7xx\
+
+For the Nucleo-H743Zi2 board use this:
+H742Z(G-I)T_H743Z(G-I)T_H747A(G-I)I_H747I(G-I)T_H750ZBT_H753ZIT_H757AII_H757IIT\ldscript.ld
+
+*/
 
 static uint8_t macaddress[6] =  {0x00, 0x80, 0xE1, 0x00, 0x00, 0x00};
 
