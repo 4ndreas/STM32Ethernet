@@ -142,7 +142,7 @@ H742Z(G-I)T_H743Z(G-I)T_H747A(G-I)I_H747I(G-I)T_H750ZBT_H753ZIT_H757AII_H757IIT\
 
 */
 
-static uint8_t macaddress[6] =  {0x00, 0x80, 0xE1, 0x00, 0x00, 0x00};
+static uint8_t macaddress[6] =  {ETH_MAC_ADDR0, ETH_MAC_ADDR1, ETH_MAC_ADDR2, ETH_MAC_ADDR3, ETH_MAC_ADDR4, ETH_MAC_ADDR5};
 
 #if LWIP_IGMP
 uint32_t ETH_HashTableHigh = 0x0;
@@ -194,15 +194,10 @@ static void low_level_init(struct netif *netif)
   heth.Init.MediaInterface = HAL_ETH_RMII_MODE;
   heth.Init.TxDesc = DMATxDscrTab;
   heth.Init.RxDesc = DMARxDscrTab;
-  heth.Init.RxBuffLen = 1536;
+  heth.Init.RxBuffLen = ETH_RX_BUFFER_SIZE;
 
 
   hal_eth_init_status = HAL_ETH_Init(&heth);
-
-  if (hal_eth_init_status == HAL_OK) {
-    /* Set netif link flag */
-    netif->flags |= NETIF_FLAG_LINK_UP;
-  }
 
   memset(&TxConfig, 0 , sizeof(ETH_TxPacketConfig));
   TxConfig.Attributes = ETH_TX_PACKETS_FEATURES_CSUM | ETH_TX_PACKETS_FEATURES_CRCPAD;
